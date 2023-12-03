@@ -20,7 +20,7 @@ def get_page_main(greeting: str, num_card: dict, top_transactions: list[dict], e
     """
     json_out = {"greeting": str(greeting), "cards": num_card, "top_transactions": top_transactions,
                 "currency_rates": exchange_rate, "stock_prices": stock_prices}
-    with open('replies.json', 'w') as f:
+    with open('replies.json', 'w', encoding='utf=8') as f:
         json.dump(json_out, f, sort_keys=False, ensure_ascii=False)
     return None
 

@@ -1,13 +1,14 @@
 import json
 import logging
 from datetime import datetime
-import requests
+from pathlib import Path
 
+import requests
 
 logger = logging.getLogger(__name__)
 
 
-def get_page_main(greeting: str, num_card: dict, top_transactions: list[dict], exchange_rate: list,
+def get_page_main(greeting: str, num_card: dict[str, list[dict]], top_transactions: list[dict], exchange_rate: list,
                   stock_prices: list) -> None:
     """
     Функция получает данные и записывает их в файл
@@ -20,7 +21,9 @@ def get_page_main(greeting: str, num_card: dict, top_transactions: list[dict], e
     """
     json_out = {"greeting": str(greeting), "cards": num_card, "top_transactions": top_transactions,
                 "currency_rates": exchange_rate, "stock_prices": stock_prices}
-    with open('replies.json', 'w', encoding='utf=8') as f:
+    ROOT_PATH = Path(__file__).parent.parent
+    filename = ROOT_PATH.joinpath("data", "replies.json")
+    with open(filename, 'w', encoding='utf=8') as f:
         json.dump(json_out, f, sort_keys=False, ensure_ascii=False)
     return None
 
@@ -53,7 +56,7 @@ def get_num_card(transactions: list) -> dict:
     :param transactions: список словаре с транзакциями
     :return num_cards:
     """
-    num_cards = {}
+    num_cards: dict[str, list[dict]] = {}
     for row in transactions:
         if row['Номер карты'] != 0:
             num_cards[row['Номер карты']] = []
@@ -87,7 +90,7 @@ def get_top_transactions(transactions: list) -> list:
     return top_transactions
 
 
-def get_exchange_rate(user_currencies: list) -> list:
+def get_exchange_rate(user_currencies: list[str]) -> list:
     """
     Функция принимает названия курса валют и возврощает список с текущим курсом валют
     :param user_currencies: названия курса валют
@@ -108,7 +111,7 @@ def get_exchange_rate(user_currencies: list) -> list:
     return currency_rates
 
 
-def get_stock_prices(user_stocks: list, apikey: str) -> list:
+def get_stock_prices(user_stocks: list, apikey: str | None) -> list:
     """
     Функция принимает названия курса валют и возврощает список акций по текущему дню
     :param user_stocks: список названий акций который надо получить

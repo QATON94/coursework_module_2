@@ -1,10 +1,13 @@
 import json
 import logging
-from typing import Any, Union
+from typing import Any
+
 import pandas as pd
 
 logger = logging.getLogger(__name__)
-def get_transactions(file_path: Any) -> Union[list[Any] | dict[Any, Any]]:
+
+
+def get_transactions(file_path: Any) -> list[Any]:
     """Функция открывает файл возврощается список транзакций или пустой список
     param path_: Путь к json файлу с транзакциями
     return: возвращает пустой список если файл не найден, либо список транзакций
@@ -37,7 +40,7 @@ def get_transactions(file_path: Any) -> Union[list[Any] | dict[Any, Any]]:
     return transactions
 
 
-def get_user_settings(file_patch) ->list:
+def get_user_settings(file_patch) -> dict:
     """
     Функция открывает файл и возврощает список настроек пользователя
     :param file_patch: Путь к файлу
